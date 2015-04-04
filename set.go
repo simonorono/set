@@ -1,3 +1,5 @@
+// Package set provides a set implementation written purely in Go and with
+// support for basic set operations
 package set
 
 // Set implementation
@@ -37,7 +39,7 @@ func (i *Set) Len() int {
 	return len(i.set)
 }
 
-// Union returns a new set with all the elements that the caller has in common
+// Union returns a new set with all the elements the caller has in common
 // with s
 func (i *Set) Union(s *Set) *Set {
 	r := NewSet()
@@ -81,8 +83,8 @@ func (i *Set) Complement(s *Set) *Set {
 	return r
 }
 
-// CartesianProduct returns the set of all OrderedPairs int the form {A B} so that A
-// is an element of the caller and B is an element of s
+// CartesianProduct returns the set of all OrderedPairs int the form {A B} so
+// that A is an element of the caller and B is an element of s
 func (i *Set) CartesianProduct(s *Set) *Set {
 	r := NewSet()
 
