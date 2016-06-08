@@ -3,40 +3,43 @@
 package set
 
 // Set implementation
-type Set struct {
-	set map[interface{}]struct{}
-}
+type Set map[interface{}]struct{}
 
 // OrderedPair is used as a tuple for the cartesian product implementation
 type OrderedPair struct {
-	A interface{}
-	B interface{}
+	First  interface{}
+	Second interface{}
 }
 
 // Exists returns wether a value is present in the set
 func (i *Set) Exists(v interface{}) bool {
-	_, ok := i.set[v]
+	_, ok := (*i)[v]
 	return ok
 }
 
 // NewSet returns a new initialized instance of Set
-func NewSet() *Set {
-	return &Set{make(map[interface{}]struct{})}
+func NewSet(elem ...interface{}) *Set {
+	n := new(Set)
+	*n = make(Set)
+	for _, v := range elem {
+		(*n)[v] = struct{}{}
+	}
+	return n
 }
 
 // Add inserts a value to the set
 func (i *Set) Add(v interface{}) {
-	i.set[v] = struct{}{}
+	(*i)[v] = struct{}{}
 }
 
 // Delete removes a value from the set
 func (i *Set) Delete(v interface{}) {
-	delete(i.set, v)
+	delete(*i, v)
 }
 
 // Len returns the number of elements in the set
 func (i *Set) Len() int {
-	return len(i.set)
+	return len(*i)
 }
 
 // Union returns a new set with all the elements the caller has in common
@@ -44,12 +47,12 @@ func (i *Set) Len() int {
 func (i *Set) Union(s *Set) *Set {
 	r := NewSet()
 
-	for k := range i.set {
-		r.set[k] = struct{}{}
+	for k := range *i {
+		(*r)[k] = struct{}{}
 	}
 
-	for k := range s.set {
-		r.set[k] = struct{}{}
+	for k := range *s {
+		(*r)[k] = struct{}{}
 	}
 
 	return r
@@ -60,8 +63,8 @@ func (i *Set) Union(s *Set) *Set {
 func (i *Set) Intersect(s *Set) *Set {
 	r := NewSet()
 
-	for k := range i.set {
-		if _, ok := s.set[k]; ok {
+	for k := range *i {
+		if _, ok := (*s)[k]; ok {
 			r.Add(k)
 		}
 	}
@@ -74,8 +77,8 @@ func (i *Set) Intersect(s *Set) *Set {
 func (i *Set) Complement(s *Set) *Set {
 	r := NewSet()
 
-	for k := range i.set {
-		if _, ok := s.set[k]; !ok {
+	for k := range *i {
+		if _, ok := (*s)[k]; !ok {
 			r.Add(k)
 		}
 	}
@@ -88,8 +91,8 @@ func (i *Set) Complement(s *Set) *Set {
 func (i *Set) CartesianProduct(s *Set) *Set {
 	r := NewSet()
 
-	for p := range i.set {
-		for q := range s.set {
+	for p := range *i {
+		for q := range *s {
 			r.Add(OrderedPair{p, q})
 		}
 	}
