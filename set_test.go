@@ -84,7 +84,7 @@ func TestCartesianProduct(t *testing.T) {
 
 	r := p.CartesianProduct(q)
 
-	if !r.Exists(OrderedPair{1, 3}) {
+	if !r.Exists([2]interface{}{1, 3}) {
 		t.Fail()
 	}
 }

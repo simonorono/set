@@ -5,12 +5,6 @@ package set
 // Set implementation
 type Set map[interface{}]struct{}
 
-// OrderedPair is used as a tuple for the cartesian product implementation
-type OrderedPair struct {
-	First  interface{}
-	Second interface{}
-}
-
 // Exists returns wether a value is present in the set
 func (i *Set) Exists(v interface{}) bool {
 	_, ok := (*i)[v]
@@ -86,14 +80,14 @@ func (i *Set) Complement(s *Set) *Set {
 	return r
 }
 
-// CartesianProduct returns the set of all OrderedPairs int the form {A B} so
+// CartesianProduct returns the set of all ordered pairs int the form {A B} so
 // that A is an element of the caller and B is an element of s
 func (i *Set) CartesianProduct(s *Set) *Set {
 	r := NewSet()
 
 	for p := range *i {
 		for q := range *s {
-			r.Add(OrderedPair{p, q})
+			r.Add([2]interface{}{p, q})
 		}
 	}
 
