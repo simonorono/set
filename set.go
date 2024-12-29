@@ -13,12 +13,13 @@ func (i *Set) Exists(v interface{}) bool {
 
 // NewSet returns a new initialized instance of Set
 func NewSet(elem ...interface{}) *Set {
-	n := new(Set)
-	*n = make(Set)
+	n := make(Set)
+
 	for _, v := range elem {
-		(*n)[v] = struct{}{}
+		n[v] = struct{}{}
 	}
-	return n
+
+	return &n
 }
 
 // Add inserts a value to the set
