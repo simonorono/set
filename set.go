@@ -37,8 +37,7 @@ func (i *Set) Len() int {
 	return len(*i)
 }
 
-// Union returns a new set with all the elements the caller has in common
-// with s
+// Union returns a new set with all the elements from both the caller and s
 func (i *Set) Union(s *Set) *Set {
 	r := NewSet()
 
