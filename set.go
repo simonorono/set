@@ -5,7 +5,7 @@ package set
 // Set implementation
 type Set map[interface{}]struct{}
 
-// Exists returns wether a value is present in the set
+// Exists returns whether a value is present in the set
 func (i *Set) Exists(v interface{}) bool {
 	_, ok := (*i)[v]
 	return ok
