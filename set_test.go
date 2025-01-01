@@ -3,17 +3,24 @@ package set
 import "testing"
 
 func TestNewSet(t *testing.T) {
-	s := NewSet()
+	s := NewSet[int]()
 	s.Add(1)
 	s.Add(2)
 	if !s.Exists(1) || !s.Exists(2) {
 		t.Fail()
 	}
+
+	otherType := NewSet[string]("one", "two")
+	otherType.Add("three")
+
+	if !otherType.Exists("one") || !otherType.Exists("two") || !otherType.Exists("three") {
+		t.Fail()
+	}
 }
 
 func TestUnion(t *testing.T) {
-	p := NewSet()
-	q := NewSet()
+	p := NewSet[int]()
+	q := NewSet[int]()
 
 	p.Add(10)
 	q.Add(20)
@@ -30,8 +37,8 @@ func TestUnion(t *testing.T) {
 }
 
 func TestIntersect(t *testing.T) {
-	p := NewSet()
-	q := NewSet()
+	p := NewSet[int]()
+	q := NewSet[int]()
 
 	p.Add(1)
 	p.Add(2)
@@ -57,8 +64,8 @@ func TestIntersect(t *testing.T) {
 }
 
 func TestComplement(t *testing.T) {
-	p := NewSet()
-	q := NewSet()
+	p := NewSet[int]()
+	q := NewSet[int]()
 
 	p.Add(1)
 	p.Add(2)
@@ -73,8 +80,8 @@ func TestComplement(t *testing.T) {
 }
 
 func TestCartesianProduct(t *testing.T) {
-	p := NewSet()
-	q := NewSet()
+	p := NewSet[int]()
+	q := NewSet[int]()
 
 	p.Add(1)
 	p.Add(2)
@@ -84,7 +91,7 @@ func TestCartesianProduct(t *testing.T) {
 
 	r := p.CartesianProduct(q)
 
-	if !r.Exists([2]interface{}{1, 3}) {
+	if !r.Exists([2]int{1, 3}) {
 		t.Fail()
 	}
 }

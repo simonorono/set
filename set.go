@@ -3,17 +3,17 @@
 package set
 
 // Set implementation
-type Set map[interface{}]struct{}
+type Set[T comparable] map[T]struct{}
 
 // Exists returns whether a value is present in the set
-func (i *Set) Exists(v interface{}) bool {
+func (i *Set[T]) Exists(v T) bool {
 	_, ok := (*i)[v]
 	return ok
 }
 
 // NewSet returns a new initialized instance of Set
-func NewSet(elem ...interface{}) *Set {
-	n := make(Set)
+func NewSet[T comparable](elem ...T) *Set[T] {
+	n := make(Set[T])
 
 	for _, v := range elem {
 		n[v] = struct{}{}
@@ -23,23 +23,23 @@ func NewSet(elem ...interface{}) *Set {
 }
 
 // Add inserts a value to the set
-func (i *Set) Add(v interface{}) {
+func (i *Set[T]) Add(v T) {
 	(*i)[v] = struct{}{}
 }
 
 // Delete removes a value from the set
-func (i *Set) Delete(v interface{}) {
+func (i *Set[T]) Delete(v T) {
 	delete(*i, v)
 }
 
 // Len returns the number of elements in the set
-func (i *Set) Len() int {
+func (i *Set[T]) Len() int {
 	return len(*i)
 }
 
 // Union returns a new set with all the elements from both the caller and s
-func (i *Set) Union(s *Set) *Set {
-	r := NewSet()
+func (i *Set[T]) Union(s *Set[T]) *Set[T] {
+	r := NewSet[T]()
 
 	for k := range *i {
 		(*r)[k] = struct{}{}
@@ -54,8 +54,8 @@ func (i *Set) Union(s *Set) *Set {
 
 // Intersect returns a new set that contains the common elements of the caller
 // with s
-func (i *Set) Intersect(s *Set) *Set {
-	r := NewSet()
+func (i *Set[T]) Intersect(s *Set[T]) *Set[T] {
+	r := NewSet[T]()
 
 	for k := range *i {
 		if _, ok := (*s)[k]; ok {
@@ -68,8 +68,8 @@ func (i *Set) Intersect(s *Set) *Set {
 
 // Complement returns a new set with the elements that exists in the caller but
 // not in s
-func (i *Set) Complement(s *Set) *Set {
-	r := NewSet()
+func (i *Set[T]) Complement(s *Set[T]) *Set[T] {
+	r := NewSet[T]()
 
 	for k := range *i {
 		if _, ok := (*s)[k]; !ok {
@@ -82,12 +82,13 @@ func (i *Set) Complement(s *Set) *Set {
 
 // CartesianProduct returns the set of all ordered pairs int the form {A B} so
 // that A is an element of the caller and B is an element of s
-func (i *Set) CartesianProduct(s *Set) *Set {
-	r := NewSet()
+func (i *Set[T]) CartesianProduct(s *Set[T]) *Set[interface{}] {
+	// can't instantiate generic array type [2]T
+	r := NewSet[interface{}]()
 
 	for p := range *i {
 		for q := range *s {
-			r.Add([2]interface{}{p, q})
+			r.Add([2]T{p, q})
 		}
 	}
 
